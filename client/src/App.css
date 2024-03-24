@@ -1,0 +1,27 @@
+.home{
+  margin-left: 50px;
+}
+
+.bg-part{
+  background-color: rgb(153, 169, 165);
+}
+
+.text-size{
+  line-height: 5rem;
+  letter-spacing: 0.3rem;
+}
+.remove-bg{
+  /* width: 50%;
+  height: 90%; */
+  mix-blend-mode: multiply;
+  /* box-sizing: border-box;
+  overflow: hidden;
+  opacity: 1; */
+}
+.reduce-size{
+  width: 100%;
+  height: 60%;
+}
+.best-seller-books{
+  background-color: white;
+}

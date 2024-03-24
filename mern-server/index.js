@@ -23,5 +23,5 @@ app.use(express.json())
 app.use('/api/user',userRoutes)
 
 app.listen(port,()=>{
-    console.log(`server Running at http://localhost:${port}`)
+    console.log(`Backend server Running at http://localhost:${port}`)
 })
