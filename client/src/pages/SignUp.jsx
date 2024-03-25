@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
-import { Alert, Button,Label,Spinner,TextInput } from 'flowbite-react'
+import { Button} from "flowbite-react";
+import { FaEye,FaEyeSlash } from "react-icons/fa";
 import { Link,useNavigate } from 'react-router-dom'
 
 
 export default function SignUp() {
+  // password show or hide garaune
+  const [password,setPassword]=useState(true)
+
+  const handleClick =()=>{
+    setPassword(!password)
+  }
   const navigate =useNavigate()
   const [formData,setFormData] = useState({})
   const [errorMessage,setErrorMessage]=useState(null)
@@ -44,51 +51,39 @@ export default function SignUp() {
     }
   }
   return (
-    <div className='min-h-screen mt-20'>
-      <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5'>
-        <div className="leftside flex-1">
-        <Link to='/' className='font-bold dark:text-white text-4xl'>
-            <Button gradientDuoTone="purpleToPink" className='rounded-lg'>Gagan blog</Button>
-        </Link>
-        <p className='text-sm mt-5'>
-          This is a demo projects. You can signup with your email and password 
-          or Google
-        </p>
-        </div>
-        <div className="rightside flex-1">
-          <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
-            <div>
-              <Label value='your user name'></Label>
-              <TextInput type='text' placeholder='Username' id='username' onChange={handleChange}/>
+    <div className='bg-[#070d1b;]'>
+      <div className="login-page customradious md:mx-[35%] md:w-2/3 md:items-center mb-36">
+        <div className="setcolor bg-[#070d1b;] pt-10 mb-20 pb-20">
+          <div className="main-one md:w-[40%] sm:w-full sm:pr-10">
+            <div className="heading">
+              <h3 className="text-center">Sign Up</h3>
             </div>
-            <div>
-              <Label value='your Email'></Label>
-              <TextInput type='email' placeholder='Email' id='email' onChange={handleChange}/>
+            <div className="form-part">
+              <form action="#" method="post" className="form-part-11">
+                <div className="alag-part">
+                  <input type="text" name="Name" id="Name" placeholder="Your Name" />
+                </div>
+                <div className="alag-part">
+                  <input type="email" name="email" id="Email" placeholder="Your Email" />
+                </div>
+
+                <div className="alag-part flex items-center justify-center ">           
+                  <input type={password ? 'password':'text'} name="name" id="Name" placeholder="Your Password" /> 
+                  {password ? <FaEyeSlash className='text-3xl bg-[#070d1b;] text-white cursor-pointer -ml-20 mt-2' onClick={handleClick}/>:<FaEye className='text-3xl bg-[#070d1b;] text-white cursor-pointer -ml-20 mt-2' onClick={handleClick}/>}
+                </div>
+
+                <div className="alag-part w-full ml-1 mr-5">
+                  <Button gradientDuoTone="purpleToPink" className='rounded-lg w-full h-2'>Submit</Button>
+                </div>
+              </form>
+              <div className="another flex justify-between items-center">
+                <h1 className='text-white text-1xl ml-5'>Have Account ?</h1>
+                <Link to='/sign-in'><Button gradientDuoTone="purpleToPink" className='rounded-lg w-full h-2 button'>Login</Button></Link>
+              </div>
+
+              
             </div>
-            <div>
-              <Label value='your Password'></Label>
-              <TextInput type='password' placeholder='example@gmail.com' id='password' onChange={handleChange}/>
-            </div>
-            <Button gradientDuoTone="purpleToPink" type='submit' disabled={loading}>
-              {loading ? (
-                <>
-                  <Spinner size='sm'/>
-                  <span className='pl-3'>Loading..</span>
-                </>
-              ):(
-                "SignUp"
-              )}
-            </Button>
-          </form>
-          <div className='flex gap-2 text-sm mt-5'>
-            <span>Have a Account ?</span>
-            <Link to='/sign-up' className='text-blue-500'>Sign In</Link>
           </div>
-          {
-            errorMessage &&(
-              <Alert className='mt-5' color='failure'>{errorMessage}</Alert>
-            )
-          }
         </div>
       </div>
     </div>
