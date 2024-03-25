@@ -77,7 +77,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reviews">
+      <section className="reviews mt-15 mb-12">
+        <div className='text-3xl size text-center mt-20'>
+          <h1>Our Custmer Reviews</h1>
+        </div>
         <Reviews/>
       </section>
     </div>

@@ -40,7 +40,7 @@ export default function Header() {
                     <Link to='/about'>About</Link>
                 </Navbar.Link>
                 <Navbar.Link active={path ==='/projects'} as={'div'}>
-                    <Link to='/projects'>Shop</Link>
+                    <Link to='/shop'>Shop</Link>
                 </Navbar.Link>
                 <Navbar.Link active={path ==='/video'} as={'div'}>
                     <Link to='/video'>Sell Your Book</Link>

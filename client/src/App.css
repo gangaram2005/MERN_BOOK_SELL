@@ -17,12 +17,9 @@
   line-height: 2rem;
 }
 .remove-bg{
-  /* width: 50%;
-  height: 90%; */
+
   mix-blend-mode: multiply;
-  /* box-sizing: border-box;
-  overflow: hidden;
-  opacity: 1; */
+
 }
 .reduce-size{
   width: 100%;
@@ -37,4 +34,9 @@
 }
 .best-seller-books{
   background-color: white;
+}
+
+.paragraphs{
+  text-align: left;
+  font-size: 18px;
 }

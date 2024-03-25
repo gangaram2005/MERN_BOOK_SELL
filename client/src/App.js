@@ -10,6 +10,7 @@ import Projects from './pages/Projects';
 import Header from './component/Header';
 import Footer from './component/Footer';
 import SingleBooks from './books/SingleBooks';
+import Shop from './pages/Shop';
 function App() {
   return (
     <div>
@@ -23,6 +24,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/projects' element={<Projects/>}/>
           <Route path='/singlebook' element={<SingleBooks/>}/>
+          <Route path='/shop' element={<Shop/>}/>
         </Routes>
         <Footer/>
       </BrowserRouter>
