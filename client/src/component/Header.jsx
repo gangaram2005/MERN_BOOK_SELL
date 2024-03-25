@@ -4,12 +4,13 @@ import { Link,useLocation } from 'react-router-dom'
 import { Button } from 'flowbite-react';
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
+import demobook from '../img/demobkimg.jpg'
 export default function Header() {
     const path=useLocation().pathname;
   return (
     <Navbar className='border-b-2'>
         <Link to='/' className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
-            <Button gradientDuoTone="purpleToPink" className='rounded-lg'>Gangaram Jaisi book logo</Button>
+            <img src={demobook} alt="" className='rounded w-12 h-12'/>
         </Link>
         <form action="">
             <TextInput type='text' placeholder='Search' rightIcon={AiOutlineSearch} className='hidden lg:inline'/>
