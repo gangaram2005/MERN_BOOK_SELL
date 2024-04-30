@@ -1,49 +1,54 @@
-import React, { useState } from 'react'
-import { Button} from "flowbite-react";
-import { Link } from 'react-router-dom';
-import { FaEye,FaEyeSlash } from "react-icons/fa";
+import React, { useState } from "react";
+import { Button } from "flowbite-react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+import "./Signup.css";
 export default function SignIn() {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const [password,setPassword]=useState(true)
+    // Create a FormData object from the form
+    const formData = new FormData(e.target);
+    console.log(formData);
 
-  const handleClick =()=>{
-    setPassword(!password)
-  }
+    // Extract values from FormData
+    const email = formData.get("username");
+    const password = formData.get("password");
+
+    try {
+      // Make the API call to submit the login data
+      const response = await fetch("http://localhost:5000/api/user/login", {
+        method: "POST",
+        body: formData, // send the form data directly
+      });
+      console.log(response);
+
+      if (response.ok) {
+        // Handle successful login
+        console.log("Login successful");
+        // Redirect or show success message
+      } else {
+        // Handle error cases
+        const errorData = await response.json();
+        console.error("Login failed", errorData);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
   return (
-    <div className='bg-[#070d1b;]'>
-      <div className="login-page customradious md:mx-[35%] md:w-2/3 md:items-center mb-36">
-        <div className="setcolor bg-[#070d1b;] pt-10 mb-20 pb-20">
-          <div className="main-one md:w-[40%] sm:w-full sm:pr-10">
-            <div className="heading">
-              <h3 className="text-center">Login</h3>
-            </div>
-            <div className="form-part">
-              <form action="#" method="post" className="form-part-11">
-                <div className="alag-part">
-                  <input type="email" name="name" id="Name" placeholder="Your Email" />
-                </div>
-
-                <div className="alag-part flex items-center justify-center ">           
-                  <input type={password ? 'password':'text'} name="name" id="Name" placeholder="Your Password" /> 
-                  {password ? <FaEyeSlash className='text-3xl bg-[#070d1b;] text-white cursor-pointer -ml-20 mt-2' onClick={handleClick}/>:<FaEye className='text-3xl bg-[#070d1b;] text-white cursor-pointer -ml-20 mt-2' onClick={handleClick}/>}
-                </div>
-
-                <div className="alag-part w-full ml-1 mr-5">
-                  <Button gradientDuoTone="purpleToPink" className='rounded-lg w-full h-2'>Submit</Button>
-                </div>
-              </form>
-              <div className="another flex justify-between items-center">
-                <h1 className='text-white text-1xl ml-5'>Don't Have Account ?</h1>
-                <Link to='/sign-up'><Button gradientDuoTone="purpleToPink" className='rounded-lg w-full h-2 button'>SignUP</Button></Link>
-              </div>
-
-              <div className="forget-password ml-2">
-                <Link><Button gradientDuoTone="purpleToPink" className='rounded-lg w-full h-2 button'>Forget Password</Button></Link>
-              </div>
-            </div>
-          </div>
-        </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="email">Username:</label>
+        <input type="email" id="email" name="email" required />
       </div>
-    </div>
-  )
+      <div>
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  );
 }
