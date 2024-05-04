@@ -10,6 +10,11 @@ import userRoutes from "./routes/UserRoutes.js";
 // importing book category add router
 import BookCategoryRoutes from "./routes/BookCategoryRoutes.js";
 import BookRoute from "./routes/BookRoute.js";
+
+import ShippingRoute from "./routes/ShippingRoute.js";
+
+import multer from "multer";
+const upload = multer({ dest: "uploads/" });
 const app = express();
 const port = process.env.PORT;
 
@@ -34,7 +39,10 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 // Use the book category routes
 app.use("/api/book-category", BookCategoryRoutes);
-app.use("/api", BookRoute); // Prefix with /api to separate API routes
+app.use("/api", upload.single("image"), BookRoute); // Prefix with /api to separate API routes
+
+//shipping
+app.use("/api/shipping/", ShippingRoute);
 
 app.listen(port, () => {
   console.log(`Backend server Running at http://localhost:${port}`);

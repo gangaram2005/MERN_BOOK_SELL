@@ -11,6 +11,7 @@ import checkUserAuth from "../middleware/auth-middleware.js";
 
 // yo book category add garne url banyo
 router.post("/addcategory", BookCategoryController.bookcategoryRegister);
+router.get("/addcategory", BookCategoryController.getBookCategory);
 
 export default router;
 

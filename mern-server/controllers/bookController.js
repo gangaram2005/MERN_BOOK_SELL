@@ -4,6 +4,7 @@ import BookCategoryModel from "../models/BookCategory.js";
 class BookController {
   // Create a new book
   static async createBook(req, res) {
+    console.log(req.body, 16);
     try {
       const {
         bookTitle,
@@ -13,12 +14,6 @@ class BookController {
         description,
         bookPdf,
       } = req.body;
-
-      // // Check if the category exists
-      // const category = await BookCategoryModel.findById(categoryId);
-      // if (!category) {
-      //   return res.status(404).json({ message: "Category not found" });
-      // }
 
       // Create a new book document
       const newBook = new Book({

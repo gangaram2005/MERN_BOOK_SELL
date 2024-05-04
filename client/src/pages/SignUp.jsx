@@ -25,52 +25,39 @@ export default function SignUp() {
     setFormData({ ...formData, [name]: value });
   };
 
+  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData); // form ma lekheko kura console ma dekhauxa  formData chai useState ko ho
     try {
-      // Create a new FormData object and append form values
-      const form = new FormData(e.currentTarget);
-      const name = form.append("name", formData.name);
-      const email = form.append("email", formData.email);
-      const password1 = form.append("password", formData.password1);
-      const cpassword1 = form.append("cpassword1", formData.cpassword1);
-      console.log(typeof form);
+      const res = await fetch("http://localhost:5000/api/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      console.log(res);
+      if (res.status === "success") {
+        navigate("/sign-in");
+      }
 
-      if (name && email && password1 && cpassword1) {
-        if (password === cpassword1) {
-          console.log("Password and confirm password is  matched");
-        } else {
-          console.log("Password and confirm password is not matched");
-          document.getElementById("register-form").reset();
-        }
-      } else {
+      if (res.status === 401) {
+        console.log("Email already exists");
+      }
+      if (res.status === 402) {
+        console.log("Password and confirm password is not matched");
+      }
+      if (res.status === 400) {
         console.log("All fields are required");
       }
 
-      // console.log(formData.name);
-      // console.log(formData.email);
-      // console.log(formData.password1);
-      // console.log(formData.cpassword1);
-      console.log(form);
-
-      const response = await fetch("http://localhost:5000/api/user/register", {
-        method: "POST",
-        body: JSON.stringify(form),
-      });
-
-      if (!response.ok) {
-        // Handle non-200 status codes
-        const errorData = await response.json();
-        setError(errorData.message);
-        console.log(errorData);
-        console.log("Can not connect to the server");
-        return;
+      if (res.ok) {
+        console.log("data uploaded to the server");
+      } else {
+        console.log("Can not upload to the server");
       }
-
-      // Handle successful response
-      console.log("Registration successful");
-      // document.getElementById("register-form").reset();
-      // Optionally clear form or redirect user
     } catch (err) {
       setError("An error occurred during submission.");
     }

@@ -1,6 +1,20 @@
 import BookCategoryModel from "../models/BookCategory.js";
 
 class BookCategoryController {
+  // get all book category
+  // Get all books (optional additional method)
+  static async getBookCategory(req, res) {
+    try {
+      const books = await BookCategoryModel.find(); // Fetch all books from the database
+      res
+        .status(200)
+        .json({ status: "success", message: "Successfully fetched", books });
+    } catch (error) {
+      console.error("Error fetching books:", error);
+      res.status(500).json({ error: "Failed to fetch books" });
+    }
+  }
+
   //register book category controller
   static bookcategoryRegister = async (req, res) => {
     try {

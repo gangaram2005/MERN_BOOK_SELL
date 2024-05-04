@@ -3,25 +3,38 @@ import bcrypt from "bcrypt"; // for password hashing
 import jwt from "jsonwebtoken"; // token generate garna ko lagi
 
 class UserController {
+  // get user
+  static getUser = async (req, res) => {
+    try {
+      const users = await UserModel.find(); /// fetching all students
+      res
+        .status(200)
+        .json({ status: "success", message: "Successfully fetching", users });
+    } catch (error) {
+      res.status(500).json({ error: "An occured while fetching error" });
+    }
+  };
+
   // user registration
   static userRegistration = async (req, res) => {
-    const { name, email, password, password_confirmation, tc } = req.body;
+    const { name, email, password1, cpassword1 } = req.body;
     const user = await UserModel.findOne({ email: email }); // first ko email database ko ho ra last ko email user bata aako email ho
     if (user) {
-      res.send({ status: "failed", message: "Email already exists" });
+      return res.status(401).json({ error: "Email already exists" });
     } else {
-      if (name && email && password && password_confirmation && tc) {
-        if (password === password_confirmation) {
+      if (name && email && password1 && cpassword1) {
+        if (password1 === cpassword1) {
           try {
             const salt = await bcrypt.genSalt(10); // for password hashing
-            const hashpassword = await bcrypt.hash(password, salt);
+            const hashpassword = await bcrypt.hash(password1, salt);
             // saving the document
-            const doc = new UserModel({
-              name: name,
-              email: email,
+            const clientdata = {
+              name,
+              email,
               password: hashpassword,
-              tc: tc,
-            });
+              cpassword: hashpassword,
+            };
+            const doc = new UserModel(clientdata);
             await doc.save();
             // enable jwt authentication
             const saved_user = await UserModel.findOne({ email: email });
@@ -36,19 +49,17 @@ class UserController {
               message: "Registration Success",
               token: token,
             });
-            document.getElementById("register-form").reset();
           } catch (error) {
             console.log(error);
             res.send({ status: "Failed", message: "Unable to register" });
           }
         } else {
-          res.send({
-            status: "Failed",
-            message: "Password and confirm password does not matched",
-          });
+          return res
+            .status(402)
+            .json({ error: "Password and confirm passowrd is not matched" });
         }
       } else {
-        res.send({ status: "Failed", message: "All Field are required" });
+        return res.status(400).json({ error: "All Fields are required" });
       }
     }
   };
@@ -56,11 +67,13 @@ class UserController {
   // user login
   static userLogin = async (req, res) => {
     try {
-      const { email, password } = req.body;
-      if (email && password) {
+      const { email, password1 } = req.body;
+      if (email && password1) {
         const user = await UserModel.findOne({ email: email });
+        const userrole = user.role;
+        console.log(userrole);
         if (user != null) {
-          const isMatch = await bcrypt.compare(password, user.password);
+          const isMatch = await bcrypt.compare(password1, user.password);
           if (user.email === email && isMatch) {
             // generate jwt token
             const token = jwt.sign(
@@ -68,26 +81,22 @@ class UserController {
               process.env.JWT_SECRET_KEY,
               { expiresIn: "5d" }
             );
-            // login
-            res.send({
-              status: "success",
-              message: "Login Success",
-              token: token,
-            });
+
+            return res
+              .status(200)
+              .json({ role: userrole, message: "Login success" });
           } else {
-            res.send({
-              status: "failed",
-              message: "Email or password is not matched",
-            });
+            return res
+              .status(400)
+              .json({ message: "Username and password is not matched" });
           }
         } else {
-          res.send({
-            status: "failed",
-            message: "You are not a register user",
-          });
+          return res
+            .status(404)
+            .json({ message: "Your are not a registered student" });
         }
       } else {
-        res.send({ status: "failed", message: "All Fields are required" });
+        return res.status(403).json({ message: "All fields are required" });
       }
     } catch (error) {
       console.log(error);
@@ -101,6 +110,7 @@ class UserController {
       if (password !== password_confirmation) {
         res.send({
           status: "failed",
+          st: "failed",
           message: "new password and confirm password does not matched",
         });
       } else {

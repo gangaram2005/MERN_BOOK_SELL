@@ -27,30 +27,35 @@ export default function AdmSidebar() {
         <Sidebar aria-label="Sidebar with multi-level dropdown example bg-black text-white">
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              <Sidebar.Item Link to="/admin/form" icon={HiChartPie}>
-                Dashboard
-              </Sidebar.Item>
-              <Sidebar.Collapse icon={HiShoppingBag} label="E-commerce">
+              {/* <Sidebar.Collapse icon={HiShoppingBag} label="E-commerce">
                 <Sidebar.Item href="#">Products</Sidebar.Item>
                 <Sidebar.Item href="#">Sales</Sidebar.Item>
                 <Sidebar.Item href="#">Refunds</Sidebar.Item>
                 <Sidebar.Item href="#">Shipping</Sidebar.Item>
-              </Sidebar.Collapse>
+              </Sidebar.Collapse> */}
+              <Link to="/admin/dashboard">
+                <Sidebar.Item Link to="/admin/form" icon={HiChartPie}>
+                  Dashboard
+                </Sidebar.Item>
+              </Link>
               <Link to="/admin/upload/book">
                 <Sidebar.Item icon={HiInbox}>Upload Book</Sidebar.Item>
               </Link>
               <Link to="/admin/bkcategory">
                 <Sidebar.Item icon={HiInbox}>Book Category</Sidebar.Item>
               </Link>
-              <Sidebar.Item href="#" icon={HiUser}>
-                Manage Books
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiUser}>
-                Users
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiShoppingBag}>
-                Products
-              </Sidebar.Item>
+
+              <Link to="/admin/manage-books">
+                <Sidebar.Item href="#" icon={HiUser}>
+                  Manage Books
+                </Sidebar.Item>
+              </Link>
+              <Link to="/admin/user-details">
+                <Sidebar.Item href="#" icon={HiUser}>
+                  Users
+                </Sidebar.Item>
+              </Link>
+
               <Sidebar.Item href="#" icon={HiArrowSmRight}>
                 Sign In
               </Sidebar.Item>
@@ -60,14 +65,6 @@ export default function AdmSidebar() {
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>
-      </div>
-      <div>
-        <div>
-          <FaAlignJustify
-            className="sm:[display:flex] md:[display:none]"
-            onClick={ShowIcon}
-          />
-        </div>
       </div>
 
       <div className="left-part">

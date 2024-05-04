@@ -167,3 +167,12 @@
   border: 2px solid rgb(235, 229, 229);
   border-radius: 20px;
 }
+
+/* image width customization for the manageBooks file */
+
+.csimagess{
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 20%;
+}

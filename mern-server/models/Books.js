@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const bookSchema = new mongoose.Schema({
   bookTitle: { type: String, required: true },
   autherName: { type: String, required: true },
-  imageUrl: { type: String, required: false },
+  imageUrl: { type: String, required: true },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "BookCategoryModel", // Reference to the Book Category model
