@@ -2,38 +2,46 @@ import React, { useEffect, useState } from "react";
 import AdmSidebar from "../Sidebar/AdmSidebar";
 import { Label, TextInput, Textarea, Select, Button } from "flowbite-react";
 import axios from "axios";
-
+import app from "../../connections/firebase";
+import { getDownloadURL, getStorage, uploadBytesResumable, ref } from 'firebase/storage'
 export default function UploadBook() {
   const [bookcat, setBookcat] = useState([]); // this is for book category
 
   // category fetch garna ko lagi api call gareko start
-  useEffect(() => {
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
-  const getData = async () => {
-    const response = await fetch(
-      "http://localhost:5000/api/book-category/addcategory"
-    ).then((response) => response.json());
-    setBookcat(response);
-  };
+  // const getData = async () => {
+  //   const response = await fetch(
+  //     "http://localhost:5000/api/book-category/addcategory"
+  //   ).then((response) => response.json());
+  //   setBookcat(response);
+  // };
   //console.log(bookcat.books);
   const bcat = bookcat.books;
-  console.log(bcat);
+  // console.log(bcat);
   // category fetch garna ko lagi api call gareko end
 
   const [pdf, setPdf] = useState("");
-  const [image, setImage] = useState("");
+
+  const [image, setImage] = useState(""); //
+  const [imageUploadError,setimageUploadError]=useState("")
+  const [imageUplaodProcess,setimageUploadProcess]=useState(null)
+  const [imageLink,setimageLink]=useState('')
+
   const [bookTitle, setBookTitle] = useState("");
   const [autherName, setAuthorName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  console.log(image);
-  console.log(pdf);
-  console.log(bookTitle);
-  console.log(autherName);
-  console.log(description);
-  console.log(category);
+
+
+  // console.log(image);
+  // console.log(pdf);
+  // console.log(bookTitle);
+  // console.log(autherName);
+  // console.log(description);
+  // console.log(category);
 
   // onchange function of every
   const handleTitleChange = (e) => {
@@ -67,6 +75,41 @@ export default function UploadBook() {
       },
     });
   };
+
+  function handleImageUpload(){
+    if(!image){
+      setimageUploadError("Image is not Selected")
+
+    }
+
+    try {
+      setimageUploadError(null)
+      const storage=getStorage(app)
+      const fileName=Date.now() + '_' + image.name
+      const storageRef=ref(storage,fileName)
+      const uploadTask=uploadBytesResumable(storageRef,image)
+      uploadTask.on(
+        'state_changed',
+        (snapshot)=>{
+          const process=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
+          setimageUploadProcess(process.toFixed(0))
+        },
+        (error)=>{
+          setimageUploadError("upload image failed")
+          setimageUploadProcess(null)
+        },
+        ()=>{
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl)=>{
+            setimageUploadProcess(null)
+            setimageUploadError(null)
+            setimageLink(downloadUrl)
+          })
+        }
+      )
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div>
@@ -127,6 +170,7 @@ export default function UploadBook() {
                         className="text-bold"
                       />
                     </div>
+
                     <TextInput
                       id="image"
                       type="file"
@@ -136,6 +180,15 @@ export default function UploadBook() {
                       className="border-solid border-3"
                       onChange={(e) => setImage(e.target.files[0])}
                     />
+                    {imageLink&&
+                     <div className="h-100 w-100">
+                     <img src={imageLink} alt="" className="w-full h-full object-cover"/>
+                     </div>
+                    }
+                   
+                        {imageUplaodProcess?<p>uloading</p>:<Button onClick={handleImageUpload}>UPload</Button>}
+                           
+
                   </div>
                   <div className="w-[40%] md:w-[80%] md:ml-10 xm:w-full xm:mr-4">
                     <div className="mb-1 block">
